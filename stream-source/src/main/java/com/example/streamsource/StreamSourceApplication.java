@@ -2,11 +2,35 @@ package com.example.streamsource;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
+@RestController
+@EnableBinding(Source.class)
 public class StreamSourceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(StreamSourceApplication.class, args);
-	}
+  private final Source source;
+
+  public StreamSourceApplication(Source source) {
+    this.source = source;
+  }
+
+  @PostMapping
+  public void tweet(@RequestBody Tweet tweet) {
+    source.output().send(MessageBuilder.withPayload(tweet).build());
+  }
+
+  public static void main(String[] args) {
+    SpringApplication.run(StreamSourceApplication.class, args);
+  }
+
+  public static class Tweet {
+    public String text;
+  }
+
 }
