@@ -36,7 +36,7 @@ curl -v localhost:8080 -d '{"text":"Hello"}' -H 'Content-Type: application/json'
 - Run jar (when rabbitmq is running)
 
 ```
-java -jar target/stream-source-0.0.1-SNAPSHOT.jar --server.port=8082
+java -jar target/stream-sink-0.0.1-SNAPSHOT.jar --server.port=8082
 ```
 
 - Send test message
